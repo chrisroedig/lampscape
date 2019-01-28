@@ -3,6 +3,7 @@
 -I/Users/croedig/.platformio/packages/framework-arduinoespressif8266/cores/esp8266
 -I/Users/croedig/.platformio/packages/framework-arduinoespressif8266/tools/sdk/lwip2/include
 -I/Users/croedig/.platformio/packages/framework-arduinoespressif8266/variants/nodemcu
+-I/Users/croedig/Documents/PlatformIO/Projects/Lampscape/lib/LedPattern
 -I/Users/croedig/.platformio/lib/Adafruit NeoPixel_ID28
 -I/Users/croedig/.platformio/lib/PubSubClient_ID89/src
 -I/Users/croedig/.platformio/lib/WifiManager_ID567
@@ -10,7 +11,7 @@
 -I/Users/croedig/.platformio/packages/framework-arduinoespressif8266/libraries/DNSServer/src
 -I/Users/croedig/.platformio/packages/framework-arduinoespressif8266/libraries/ESP8266WiFi/src
 -I/Users/croedig/.platformio/packages/framework-arduinoespressif8266/libraries/Ticker
--I/Users/croedig/Documents/PlatformIO/Projects/Lampscape/lib/LedPattern
+-I/Users/croedig/Documents/PlatformIO/Projects/Lampscape/lib/MqttClient
 -I/Users/croedig/.platformio/lib/ArduinoJson_ID64/src
 -I/Users/croedig/.platformio/lib/NeoPixelBus_ID547/src
 -I/Users/croedig/.platformio/packages/framework-arduinoespressif8266/libraries/ArduinoOTA
