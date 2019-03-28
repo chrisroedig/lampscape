@@ -19,6 +19,7 @@ public:
     double _current_mix;
 
     void set_colors(int num_colors, int color[][4]);
+    void set_colors(int num_colors, int **color);
     int* pixel(int index);
     void assign(Adafruit_NeoPixel * strip);
     void assign(Adafruit_NeoPixel * strip, int start_pixel, int end_pixel);

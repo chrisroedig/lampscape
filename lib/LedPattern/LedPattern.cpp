@@ -28,6 +28,10 @@ void LedPattern::set_colors(int num_colors, int color[][4]){
   }
   //build_color_cache();
 };
+void LedPattern::set_colors(int num_colors, int **color){
+  _num_colors = num_colors;
+  _colors = color;
+}
 
 int* LedPattern::pixel(int index){
   // the pattern color scheme at _current_mix
