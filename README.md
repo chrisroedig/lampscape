@@ -2,7 +2,7 @@
 
 ESP-8266/MQTT Controlled LED Data Visualization Sculpture
 
-
+![Lampscape Application Example](https://github.com/chrisroedig/lampscape/blob/master/lampscape.jpeg)
 
 The idea is to have a device that displays relevant information with a pleasant led array animation.
 In my case, I 3D printed a translucent "mountain range" and the LEDs illustrate real-time and cumulative power and energy offset from teh solar panels on my house.
