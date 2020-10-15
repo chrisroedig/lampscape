@@ -19,3 +19,7 @@ The runtime API is through MQTT. More details coming soon, but here's a general 
 * lampscape announces all changes in state via MQTT
 
 In my setup I use nodered to collect data and send commands to lampscape.
+
+## Using this Code
+
+Much of the application specific runtime values are hardcoded, make sure you edit them. This is a very WIP project for my own amusement, so there is unfinished, deprecated and generally junky code in here. 
