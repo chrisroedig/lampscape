@@ -38,20 +38,22 @@ void LedWaveGauge::setPalette(int32 colors[4]){
         _colors[0],_colors[1],_colors[2]
       );
 }
-void LedWaveGauge::setParams(int params[4]){
+void LedWaveGauge::setParams(int params[16]){
   _marker0 = params[0];
   _marker1 = params[1];
   _freqs[0] = params[2];
   _freqs[1] = params[3];
   _freqs[2] = params[4];
-
+  _mods[0] = params[5];
+  _mods[1] = params[6];
+  _mods[2] = params[7];
 }
 
 uint32 LedWaveGauge::color(int region, int pixel){
   float time = millis() / 1000.0;
   
   float phase =  (float)(time *_speed* _freqs[region]+ ((float)pixel*_period));
-  uint8 amp = (uint8) round(255.0*(0.5 + (0.5 * sin(phase))));
+  uint8 amp = 255 - round(_mods[region]*(0.5 + (0.5 * sin(phase))));
   return dimmedColor(_colors[region], amp);
 }
 

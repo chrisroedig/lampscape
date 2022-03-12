@@ -11,7 +11,7 @@ public:
   ~LedWaveGauge();
   uint32 pixel(int, int);
   void setPalette(int32[4]);
-  void setParams(int[4]);
+  void setParams(int[16]);
   uint32 color(int, int);
 
 private:
@@ -21,6 +21,7 @@ private:
   float _period;
   uint32 _colors[3] = {0,0,0};
   int _freqs[3] = {0,0,0};
+  int _mods[3] = {255,255,255};
 };
 
 uint32 dimmedColor(uint32 c, uint8 amp);

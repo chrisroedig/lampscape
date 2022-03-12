@@ -18,11 +18,11 @@ public:
   void publish_state(String topic, String message);
   void log(String message);
   void announce_boot();
-  void set_power_callback(void (*func)(bool) );
+
   void set_bright_callback(void (*func)(int) );
   void set_mode_callback(void (*func)(int) );
   void set_palette_callback(void (*func)(int32[4]) );
-  void set_params_callback(void (*func)(int[8]) );
+  void set_params_callback(void (*func)(int[16]) );
 
 private:
   PubSubClient _client;
@@ -33,11 +33,12 @@ private:
   String _mode_topic;
   String _palette_topic;
   String _params_topic;
-  void (*_cmd_power_callback)(bool) = NULL;
+  
   void (*_cmd_bright_callback)(int) = NULL;
   void (*_cmd_mode_callback)(int) = NULL;
   void (*_cmd_palette_callback)(int32[4]) = NULL;
   void (*_cmd_params_callback)(int[8]) = NULL;
+  
   void subscribe();
   void reconnect();
   void inbound_callback(char* topic, uint8_t* payload, unsigned int length);

@@ -16,7 +16,7 @@ bool MqttClient::setup(char * mqtt_server, char *  device_name){
   }
   _device_name = device_name;
   Serial.printf("wifi connected: setting up mqtt on %s \n", mqtt_server);
-  _client.setServer("rileypi.local", 1883);
+  _client.setServer(mqtt_server, 1883);
   _client.setCallback(std::bind(&MqttClient::inbound_callback, this, _1, _2, _3));
   return true;
 };
@@ -69,12 +69,10 @@ void MqttClient::publish(String topic, String message){
 };
 
 void MqttClient::subscribe(){
-  _power_topic = "cmnd/"+String(_device_name)+"/POWER";
   _bright_topic = "cmnd/"+String(_device_name)+"/BRIGHT";
   _mode_topic = "cmnd/"+String(_device_name)+"/MODE";
   _palette_topic = "cmnd/"+String(_device_name)+"/PALETTE";
   _params_topic = "cmnd/"+String(_device_name)+"/PARAMS";
-  _client.subscribe(_power_topic.c_str());
   _client.subscribe(_bright_topic.c_str());
   _client.subscribe(_mode_topic.c_str());
   _client.subscribe(_palette_topic.c_str());
@@ -84,10 +82,6 @@ void MqttClient::subscribe(){
   announce_boot();
 }
 
-
-void MqttClient::set_power_callback(void (*func)(bool) ){
-  _cmd_power_callback = func;
-};
 void MqttClient::set_bright_callback(void (*func)(int) ){
   _cmd_bright_callback = func;
 };
@@ -97,7 +91,7 @@ void MqttClient::set_mode_callback(void (*func)(int) ){
 void MqttClient::set_palette_callback(void (*func)(int32[4]) ){
   _cmd_palette_callback = func;
 };
-void MqttClient::set_params_callback(void (*func)(int[8]) ){
+void MqttClient::set_params_callback(void (*func)(int[16]) ){
   _cmd_params_callback = func;
 };
 
@@ -109,22 +103,19 @@ void MqttClient::inbound_callback(char* topic, uint8_t* payload, unsigned int le
   String topic_str = String(topic);
   String payload_str = (char*)payload;
   payload_str = payload_str.substring(0, length);
-
-  if(*_cmd_power_callback != NULL && topic_str.equalsIgnoreCase(_power_topic)){
-      bool state = payload_str.equalsIgnoreCase("ON");
-      log("power command received");
-      _cmd_power_callback(state);
-  };
+  
   if(*_cmd_bright_callback != NULL && topic_str.equalsIgnoreCase(_bright_topic)){
       int brightness = payload_str.toInt();
       log("bightness command received");
       _cmd_bright_callback(brightness);
   };
+  
   if(*_cmd_mode_callback != NULL && topic_str.equalsIgnoreCase(_mode_topic)){
       int mode = payload_str.toInt();
       log("mode command received");
       _cmd_mode_callback(mode);
   };
+  
   if(*_cmd_palette_callback != NULL && topic_str.equalsIgnoreCase(_palette_topic)){
       log("palette command received");
       
@@ -134,16 +125,17 @@ void MqttClient::inbound_callback(char* topic, uint8_t* payload, unsigned int le
       int32 colors[4] = {doc[0], doc[1], doc[2], doc[3]};
       _cmd_palette_callback(colors);
   };
+
   if(*_cmd_params_callback != NULL && topic_str.equalsIgnoreCase(_params_topic)){
-      log("params command received");
       StaticJsonDocument<128> doc;
       deserializeJson(doc, payload_str);
-      int params[8] = {
+      int params[16] = {
         doc[0], doc[1], doc[2], doc[3],
-        doc[4], doc[5], doc[6], doc[7]
+        doc[4], doc[5], doc[6], doc[7],
+        doc[8], doc[9], doc[10], doc[11],
+        doc[12], doc[13], doc[14], doc[15]
         };
-      log("params command received");
-      
       _cmd_params_callback(params);
+      log("params command received");
   };
 };

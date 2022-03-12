@@ -1,0 +1,19 @@
+// NeoPixel Config
+
+// Pin (arduino) where strip is connected for data
+#define NEO_PIN 4
+// total number of pixels
+#define NEO_PIXELS 32
+// bitmask for led configuration 
+#define NEO_INTERFACE NEO_GRBW+NEO_KHZ800
+
+// Comms config
+
+// domain name of MQTT host (assuming port=1883)
+#define MQTT_HOST ""
+
+// Name used in topic to target this instance
+// topic example "cmnd/<device_name>/MODE" see MqttClient.cpp
+#define DEVICE_NAME "lampscape2"
+
+//copy this file to include/config.h and modify as needed
