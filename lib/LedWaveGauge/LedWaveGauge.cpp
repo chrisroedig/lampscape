@@ -10,7 +10,7 @@ LedWaveGauge::LedWaveGauge(){
   _freqs[1] = 0;
   _freqs[2] = 0;
   _speed = 1.0/15.0;
-  _period = 0.5;
+  _pitch = 64.0;
 }
 LedWaveGauge::~LedWaveGauge(){
 
@@ -34,7 +34,7 @@ void LedWaveGauge::setPalette(int32 colors[4]){
   _colors[0] = colors[0];
   _colors[1] = colors[1];
   _colors[2] = colors[2];
-  Serial.printf("params %i, %i,%i",
+  Serial.printf("palette %i, %i,%i",
         _colors[0],_colors[1],_colors[2]
       );
 }
@@ -44,23 +44,25 @@ void LedWaveGauge::setParams(int params[16]){
   _freqs[0] = params[2];
   _freqs[1] = params[3];
   _freqs[2] = params[4];
-  _mods[0] = params[5];
-  _mods[1] = params[6];
-  _mods[2] = params[7];
+  _sizes[0] = params[5];
+  _sizes[1] = params[6];
+  _sizes[2] = params[7];
+  _amps[0] = params[8];
+  _amps[1] = params[9];
+  _amps[2] = params[10];
+  Serial.printf("speeds: %i %i %i \n", _freqs[0], _freqs[1], _freqs[2]);
+  Serial.printf("sizes: %i %i %i \n", _sizes[0], _sizes[1], _sizes[2]);
+  Serial.printf("amps: %i %i %i \n", _amps[0], _amps[1], _amps[2]);
 }
 
 uint32 LedWaveGauge::color(int region, int pixel){
   float time = millis() / 1000.0;
   
-  float phase =  (float)(time *_speed* _freqs[region]+ ((float)pixel*_period));
-  uint8 amp = 255 - round(_mods[region]*(0.5 + (0.5 * sin(phase))));
+  float phase = 0;
+  phase += (float)(time *_speed* _freqs[region]);
+  phase += ((float)pixel*_pitch)/_sizes[region];
+  int amp = 255 - round(_amps[region]*(0.5 + (0.5 * sin(phase))));
+  // amp = amp * amp / 65536;
   return dimmedColor(_colors[region], amp);
 }
 
-uint32 dimmedColor(uint32 c, uint8 amp){
-  int w = (((uint8_t)(c >> 24))*amp)>>8;
-  int r = (((uint8_t)(c >> 16))*amp)>>8;
-  int g = (((uint8_t)(c >>  8))*amp)>>8;
-  int b = (((uint8_t)c)*amp)>>8;
-  return (w<<24)|(r<<16)|(g<<8)|(b);
-}

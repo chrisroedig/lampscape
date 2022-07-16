@@ -5,6 +5,7 @@
 #define MODE_OFF 0
 #define MODE_LAMP 1
 #define MODE_WAVEGAUGE 2
+#define MODE_SPARKLE 3
 
 #include <config.h>
 #include <Arduino.h>
@@ -14,6 +15,7 @@
 #include <Adafruit_NeoPixel.h>
 #include <LedLamp.h>
 #include <LedWaveGauge.h>
+#include <LedSparkle.h>
 
 
 void tick();
@@ -23,6 +25,7 @@ void ledsInit(int count);
 void mqttInit(char * hostname, char * deviceName);
 
 void ledLoop();
+void ledTick();
 LedLamp *driver;
 
 void mqttBrightCallback(int brightness);

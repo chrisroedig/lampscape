@@ -127,7 +127,7 @@ void MqttClient::inbound_callback(char* topic, uint8_t* payload, unsigned int le
   };
 
   if(*_cmd_params_callback != NULL && topic_str.equalsIgnoreCase(_params_topic)){
-      StaticJsonDocument<128> doc;
+      StaticJsonDocument<255> doc;
       deserializeJson(doc, payload_str);
       int params[16] = {
         doc[0], doc[1], doc[2], doc[3],

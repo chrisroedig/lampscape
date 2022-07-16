@@ -9,6 +9,7 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel( NEO_PIXELS, NEO_PIN, NEO_INTERFACE)
 LedLamp ledLamp = LedLamp();
 LedLamp ledOff = LedLamp();
 LedWaveGauge ledWave = LedWaveGauge();
+LedSparkle ledSparkle = LedSparkle();
 
 int ledBrightness = 255;
 int ledMode = MODE_LAMP;
@@ -29,7 +30,7 @@ void loop() {
   // put your main code here, to run repeatedly:
   mclient.loop();
   ledLoop();
-  delay(10);
+  delay(5);
 }
 
 void tick(){
@@ -77,6 +78,7 @@ void mqttInit(char * hostname, char * deviceName){
 
 
 void ledLoop(){
+  driver->tick();
   strip.setBrightness(ledBrightness);
   for(int i=0;i<NEO_PIXELS; i++){
     strip.setPixelColor(i, driver->pixel(i, NEO_PIXELS));
@@ -91,19 +93,27 @@ void mqttBrightCallback(int brightness){
 
 void mqttModeCallback(int mode){
   ledMode = mode;
-  Serial.printf("LED mode is now %i\n", ledMode);
+  Serial.printf("LED mode is now %i ", ledMode);
   switch (mode)
   {
   case MODE_OFF:
+    Serial.printf("OFF\n");
     driver = &ledOff;
     break;
   case MODE_LAMP:
+    Serial.printf("LAMP\n");
     driver = &ledLamp;
     break;
   case MODE_WAVEGAUGE:
+    Serial.printf("WAVE GAUGE\n");
     driver = &ledWave;
     break;
+  case MODE_SPARKLE:
+    Serial.printf("SPARKLE\n");
+    driver = &ledSparkle;
+    break;
   default:
+    Serial.printf("DEFAULT OFF\n");
     driver = &ledOff;
     break;
   }
@@ -112,11 +122,13 @@ void mqttModeCallback(int mode){
 void mqttPaletteCallback(int32 palette[4]){
   ledLamp.setPalette(palette);
   ledWave.setPalette(palette);
+  ledSparkle.setPalette(palette);
 }
 
 void mqttParamsCallback(int params[16]){
   ledLamp.setParams(params);
   ledWave.setParams(params);
+  ledSparkle.setParams(params);
 }
 
 
